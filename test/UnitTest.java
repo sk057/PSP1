@@ -84,34 +84,58 @@ public class UnitTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"TesT@email.com", "te123st@email.com", "!#$%&'*+-/=?^_`{|}~@email.com", "фффф@email.com", "€@email.com"})
-    void testEmailSymbols_trueIfNoWrongSymbols(String email){
+    @ValueSource(strings = {"TesT@email.com", "te123st@email.com", "!#$%&'*+-/=?^_`{|}~@email.com"})
+    void testEmailSymbols_true(String email){
         assertTrue(EmailValidator.validateSymbols(email));
+    }
+    @ParameterizedTest
+    @ValueSource(strings = {"фффф@email.com", "€@email.com"})
+    void testEmailSymbols_false(String email){
+        assertFalse(EmailValidator.validateSymbols(email));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"test@email.com", "te.st@email.com", ".test@email.com", "test.@email.com", "te..st@email.com"})
-    void testEmailDotPlacement_trueIfCorrect(String email){
+    @ValueSource(strings = {"test@email.com", "te.st@email.com"})
+    void testEmailDotPlacement_true(String email){
         assertTrue(EmailValidator.validateSymbols(email));
+    }
+    @ParameterizedTest
+    @ValueSource(strings = {".test@email.com", "test.@email.com", "te..st@email.com"})
+    void testEmailDotPlacement_false(String email){
+        assertFalse(EmailValidator.validateSymbols(email));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"test@email.com", "test@EMAIL.COM", "test@#!@.com", "test@eeeeemmmmmaaaaaiiiiilllll.aaa",
-            "test@123.info", "test@12.com", "test@1.com",
-            "test@eeeeemmmmmaaaaaiiiiillllleeeeemmmmmaaaaaiiiiillllleeeeemmmmmaaaaaiiiiillllleeeeemmmmmaaaaaiiiiillllleeeeemmmmmaaaaaiiiiilllll.com"})
-    void testEmailDomainServer(){
+    @ValueSource(strings = {"test@email.com", "test@EMAIL.COM", "test@123.info", "test@1.com"})
+    void testEmailDomainName_true(){
         assertTrue(EmailValidator.validateServer("test@.com"));
     }
-
     @ParameterizedTest
-    @ValueSource(strings = {"test@email.com", "test@e-mail.com", "test@-email.com", "test@email-.com"})
-    void testDomainHyphenPlacement_trueIfCorrect(String email){
-        assertTrue(EmailValidator.validateSymbols(email));
+    @ValueSource(strings = {"test@","test@#!email.com", "test@eeeeemmmmmaaaaaiiiiilllll.aaa", "test@12.com",
+            "test@eeeeemmmmmaaaaaiiiiillllleeeeemmmmmaaaaaiiiiillllleeeeemmmmmaaaaaiiiiilllll.com"})
+    void testEmailDomainName_false(){
+        assertFalse(EmailValidator.validateServer("test@.com"));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"test@email.com", "test@email.bosch", "test@email.aaaa"})
-    void testEmailTLD_trueIfExists(String email){
+    @ValueSource(strings = {"test@email.com", "test@e-mail.com"})
+    void testDomainHyphenPlacement_true(String email){
+        assertTrue(EmailValidator.validateSymbols(email));
+    }
+    @ParameterizedTest
+    @ValueSource(strings = {"test@-email.com", "test@email-.com"})
+    void testDomainHyphenPlacement_false(String email){
+        assertFalse(EmailValidator.validateSymbols(email));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"test@email.com", "test@email.bosch"})
+    void testEmailTLD_true(String email) {
         assertTrue(EmailValidator.validateTLD(email));
+    }
+    @ParameterizedTest
+    @ValueSource(strings = {"test@email.aaaa"})
+    void testEmailTLD_false(String email){
+        assertFalse(EmailValidator.validateTLD(email));
     }
 }
