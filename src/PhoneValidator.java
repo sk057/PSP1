@@ -1,22 +1,13 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class PhoneValidator {
 
     Map<String, String> prefixRules  = new HashMap<String, String>() {{
-        put("lt", "86");
-        put("lv", "87");
+        //put("lt", "8");
+        //put("lv", "8");
+        //put("lvInternational","+371")
     }};
-
-    private  <K, V> K getKey(Map<K, V> map, V value) {
-        for (Map.Entry<K, V> entry : map.entrySet()) {
-            if (entry.getValue().equals(value)) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
 
     public boolean hasOnlyNumbers(String number){
         boolean isPlus = false;
@@ -34,18 +25,14 @@ public class PhoneValidator {
     }
 
     public String changeToLithuanianPrefix(String number){
-        String LTNumber = "8";
-        for(int i=0;i < number.length();i++){
-            if (i>3){
-                LTNumber+=number.charAt(i);
-            }
-        }
-        return LTNumber;
+        return number.replace("8", "+370");
     }
 
-    public String addNewPhoneRules(int prefix){
-        //???
-        String prefixString = String.valueOf(prefix);
-        return getKey(prefixRules, prefixString);
+    public void addNewPhoneRules(String prefix, String country){
+        prefixRules.put(country.toLowerCase(), prefix);
+    }
+
+    public boolean checkPrefixWithCountry(String number, String country){
+        return number.startsWith(prefixRules.get(country));
     }
 }

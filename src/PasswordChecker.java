@@ -1,8 +1,7 @@
 public class PasswordChecker {
 
-    public int passwordLenght(String password){
-        int minLength = 7;
-        return (password.length() >= minLength) ? password.length() : -1;
+    public boolean passwordLenght(String password, int minLength){
+        return (password.length() >= minLength);
     }
 
     public boolean hasUppercase(String password){
