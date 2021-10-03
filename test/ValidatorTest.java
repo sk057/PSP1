@@ -8,7 +8,7 @@ public class ValidatorTest {
     @Test
     public void TestPasswordLengthIsBiggerThanX(){
         PasswordChecker passwordChecker = new PasswordChecker();
-        assertEquals(8, passwordChecker.passwordLenght("password"));
+        assertEquals(8, passwordChecker.passwordLenght("password", 7));
     }
 
     @Test
@@ -32,13 +32,14 @@ public class ValidatorTest {
     @Test
     public void TestPhoneChangeToLithuanianPrefix(){
         PhoneValidator phoneValidator = new PhoneValidator();
-        assertEquals("86123456",phoneValidator.changeToLithuanianPrefix("+3706123456"));
+        assertEquals("+3706123456",phoneValidator.changeToLithuanianPrefix("86123456"));
     }
 
     @Test
     public void TestPhoneAddNewPhoneCodesRules(){
         PhoneValidator phoneValidator = new PhoneValidator();
-        assertEquals("lv",phoneValidator.addNewPhoneRules(87));
+        phoneValidator.addNewPhoneRules("8", "lv");
+        assertTrue(phoneValidator.checkPrefixWithCountry("87123456", "lv"));
     }
 
     // Email test requirements
