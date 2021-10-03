@@ -5,32 +5,47 @@ public class EmailValidator {
     }
 
     public boolean hasOnlyRightSymbols(String email){
-        String localPart;
-        localPart = email.substring(0, email.indexOf("@"));
-        String illegalSymbols = "\"(),:;<>@[\\]";
+        String localPart = email.substring(0, email.indexOf("@"));
 
-        for(int i=0;i < localPart.length();i++){
-            for(int j=0;j < illegalSymbols.length();j++){
-                if (localPart.charAt(i) == illegalSymbols.charAt(j)){
-                    return false;
-                }
-            }
+        if (hasIllegalSymbols(localPart, "\"(),:;<>@[\\]".toCharArray())){
+            return false;
         }
+
+        if (localPart.contains("..") || localPart.startsWith(".") || localPart.endsWith(".")){
+            return false;
+        }
+
         return true;
     }
 
     public boolean hasRightDomain(String email){
-        String illegalSymbols = " _!@#$%^&*();:,?/\\=+<>";
-        String domainPart;
-        domainPart = email.substring(email.indexOf('@')+1, email.length()-1) + email.charAt(email.length()-1);
+        String domainPart = email.substring(email.indexOf('@')+1, email.length()-1) + email.charAt(email.length()-1);
+        String TLD = email.substring(email.lastIndexOf(".") + 1, email.length()-1) + email.charAt(email.length()-1);
 
-        for(int i=0;i < domainPart.length();i++){
-            for(int j=0;j < illegalSymbols.length();j++){
-                if (domainPart.charAt(i) == illegalSymbols.charAt(j)){
-                    return false;
+        if (hasIllegalSymbols(domainPart, " _!@#$%^&*();:,?/\\=+<>".toCharArray())){
+            return false;
+        }
+
+        if (domainPart.startsWith("-") || domainPart.endsWith("-") ||
+            domainPart.contains("--") || domainPart.contains(".-") || domainPart.contains("-.")){
+            return false;
+        }
+
+        if (TLD.length() <= 2 || TLD.length() >= 63){
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean hasIllegalSymbols(String string, char[] illegalSymbols){
+        for(char symbol : string.toCharArray()){
+            for(char illegalSymbol : illegalSymbols){
+                if (symbol == illegalSymbol){
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 }
