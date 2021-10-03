@@ -6,4 +6,4 @@ test aplanke - gauti testai ir mano testai (užkomentuoti) <br>
 src aplanke - implementacija
 <br> <br>
 Gautų testų apžvalga:<br>
-poros testų implementacija buvo prastai nuspėta
+poros testų implementacija buvo prastai nuspėta, bet kiti testai buvo aiškūs ir suprantami
