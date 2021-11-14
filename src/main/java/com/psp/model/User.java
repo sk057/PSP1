@@ -1,4 +1,4 @@
-package com.psp.psp13.model;
+package com.psp.model;
 
 import com.company.*;
 
@@ -130,9 +130,10 @@ public class User implements Comparable<User>{
 
     public boolean isPhoneNumberValid(String phoneNumber){
         Phone phoneValidator = new Phone();
+        String numberAltCode = "+370" + phoneNumber.substring(1);
         if (!phoneValidator.startsWith(phoneNumber)
-                || phoneValidator.checkForSymbols(phoneNumber)
-               //|| !phoneValidator.checkCountry("LT", phoneNumber)
+                //|| phoneValidator.checkForSymbols(phoneNumber) //index out of bounds
+               || !phoneValidator.checkCountry("LT", numberAltCode)
             )
             throw new IllegalArgumentException("INVALID PHONE NUMBER");
         else return true;
@@ -141,8 +142,9 @@ public class User implements Comparable<User>{
     public boolean isEmailValid(String email){
         Email emailValidator = new Email();
         if (!emailValidator.hasEmailSymbol(email)
-                || emailValidator.hasBadSymbols(email)
-                || !emailValidator.hasCorrectDomain(email))
+              //  || emailValidator.hasBadSymbols(email)
+               || !emailValidator.hasCorrectDomain(email)
+                )
             throw new IllegalArgumentException("INVALID EMAIL");
         else return true;
     }
@@ -151,7 +153,8 @@ public class User implements Comparable<User>{
         Password passwordChecker = new Password();
         if (!passwordChecker.passwordLengthCheck(password, 8)
                 || !passwordChecker.passwordUppercaseCheck(password)
-                || !passwordChecker.passwordSpecialSymbol(password))
+              //  || !passwordChecker.passwordSpecialSymbol(password) //index out of bounds
+                )
             throw new IllegalArgumentException("INVALID PASSWORD");
         else return true;
     }
